@@ -9,15 +9,13 @@ we should calculate the 8 dimentions, 4*4 --> into 128 dimentions
 %}
 
 %%
-%{
-function [descriptors] = feature_descriptor [ img, features, orientation ]
-end
-%}
-%%
-clear all;
-features = importdata('location.mat');
-img = importdata('img.mat');
+function [ descriptors ] = feature_descriptor ( img, features )
 
+
+%
+%features = importdata('featureArray1.mat');
+%img = imread('girrafe01.png');
+%img = rgb2gray(img);
 %radius = 5;
 %windowSize = 2*radius + 1;
 %[numOfFeatures x ]= size( features );
@@ -28,9 +26,9 @@ img = importdata('img.mat');
 %%
 radius = 8;
 
-numOfFeatures= size( features,2 );
+numOfFeatures= size( features,1 );
 %initialization
-descriptors = cell(1,numOfFeatures);
+descriptors = zeros(numOfFeatures,16*radius);
 
 %bigger image
 [ height width ] = size(img);
@@ -83,5 +81,7 @@ for i = 1:numOfFeatures
         end
     end
     descript = descript(:);
-    descriptors{i} = descript;
+    descriptors(i,:) = descript;
+end
+
 end
