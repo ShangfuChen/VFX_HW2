@@ -54,6 +54,6 @@ for i = 1:numOfFeatures1
     end
 end
 
-matching = matching(1:count,:);
+matchings = matching(1:count,:);
 
 end

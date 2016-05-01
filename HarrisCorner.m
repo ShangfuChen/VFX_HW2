@@ -1,5 +1,5 @@
-function [featureArray] = HarrisCorner(img)
-grayImg = rgb2gray(img);
+function [featureArray] = HarrisCorner(grayImg)
+%grayImg = rgb2gray(img);
 grayImg = cast(grayImg, 'double');
 [height width] = size(grayImg);
 Ix = diff(grayImg,1,2);
@@ -49,7 +49,7 @@ featureArray = step(hLocalMax, R);
 red = uint8([255 0 0]);
 shapeInserter = vision.ShapeInserter('Shape','Circles','Fill',true,...
                             'FillColor','Custom','CustomFillColor',red);
-
+%{
 for i = 1:size(featureArray,1);
     circle = int32([featureArray(i,:),2]);
     img = step(shapeInserter, img, circle);
@@ -57,5 +57,5 @@ end;
 
 figure;
 imshow(img);
-
+%}
 end
