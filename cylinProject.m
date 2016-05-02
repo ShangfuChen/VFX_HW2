@@ -74,7 +74,6 @@ for h = 1:size(rbitmap,1);
     end;
 end;
 
-rfeatureArray
 red = uint8([255 0 0]);
 shapeInserter = vision.ShapeInserter('Shape','Circles','Fill',true,...
                             'FillColor','Custom','CustomFillColor',red);
