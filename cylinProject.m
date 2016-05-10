@@ -1,5 +1,4 @@
 function [rfeatureArray, rimg] = cylinProject(featureArray, img, focalLength)
-
 % get focal length from autostitch
 bitmap = zeros(size(img,1),size(img,2));
 for i = 1:size(featureArray,1);
@@ -9,21 +8,21 @@ end;
 height = size(img,1);
 width = size(img,2);
 
-midwidth = width / 2;
-midheight = height / 2;
+midwidth = floor(width / 2);
+midheight = floor(height / 2);
 
-luimg = img(1:floor(midheight),1:floor(midwidth),:);
-ruimg = img(1:floor(midheight),floor(midwidth+1):width,:);
-ldimg = img(floor(midheight+1):height,1:floor(midwidth),:);
-rdimg = img(floor(midheight+1):height,floor(midwidth+1):width,:);
+luimg = img(1:midheight,1:midwidth,:);
+ruimg = img(1:midheight,midwidth+1:width,:);
+ldimg = img(midheight+1:height,1:midwidth,:);
+rdimg = img(midheight+1:height,midwidth+1:width,:);
 
-luBitmap = bitmap(1:floor(midheight),1:floor(midwidth),:);
-ruBitmap = bitmap(1:floor(midheight),floor(midwidth+1):width,:);
-ldBitmap = bitmap(floor(midheight+1):height,1:floor(midwidth),:);
-rdBitmap = bitmap(floor(midheight+1):height,floor(midwidth+1):width,:);
+luBitmap = bitmap(1:midheight,1:midwidth,:);
+ruBitmap = bitmap(1:midheight, midwidth+1:width,:);
+ldBitmap = bitmap(midheight+1:height, 1:midwidth,:);
+rdBitmap = bitmap(midheight+1:height, midwidth+1:width,:);
 
 
-for x = 1:width - floor(midwidth+1) +1;
+for x = 1:width - midwidth;
     for y = 1:midheight;
         cx = ceil(focalLength * atan(x/focalLength));
         cy = ceil(focalLength * y / sqrt(x^2 + focalLength^2));
@@ -39,7 +38,7 @@ for x = 1:midwidth;
         lub(cy,cx) = luBitmap(midheight-y+1,midwidth-x+1);
     end;
 end;
-for x = 1:width - floor(midwidth+1) +1;
+for x = 1:width - midwidth;
     for y = 1:height - floor(midheight+1) +1;
         cx = ceil(focalLength * atan(x/focalLength));
         cy = ceil(focalLength * y / sqrt(x^2 + focalLength^2));
@@ -48,7 +47,7 @@ for x = 1:width - floor(midwidth+1) +1;
     end;
 end;
 for x = 1:midwidth;
-    for y = 1:height - floor(midheight+1) +1;
+    for y = 1:height - midheight;
         cx = ceil(focalLength * atan(x/focalLength));
         cy = ceil(focalLength * y / sqrt(x^2 + focalLength^2));
         ld(cy,cx,:) = ldimg(y,midwidth-x+1,:);
@@ -83,8 +82,5 @@ for i = 1:size(rfeatureArray,1);
     circle = int32([rfeatureArray(i,:),2]);
     rimg = step(shapeInserter, rimg, circle);
 end;
-
-figure;
-imshow(rimg);
 
 end

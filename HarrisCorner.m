@@ -39,12 +39,18 @@ for h = 1:height;
         R(h,w) = det(M) - k*trace(M)*trace(M);
     end;
 end;
-local_max = imregionalmax(R);
+
 hLocalMax = vision.LocalMaximaFinder;
 hLocalMax.MaximumNumLocalMaxima = 500;
 hLocalMax.Threshold = 1E4;
 hLocalMax.NeighborhoodSize = [11 11];
 featureArray = step(hLocalMax, R);
+% logR = log(R);
+% figure;
+
+% imshow(logR);
+% caxis auto;
+% colormap jet;
 
 red = uint8([255 0 0]);
 shapeInserter = vision.ShapeInserter('Shape','Circles','Fill',true,...
